@@ -1,0 +1,12 @@
+flowchart LR
+    A["Instance data<br/>lots, requests, distances<br/>(instance.py)"] --> B["QuadraticProgram<br/>10 binary vars + capacity constraints<br/>(model.py)"]
+    B --> C["QUBO<br/>penalties + 5 slack bits = 15 qubits"]
+    C --> D["Ising Hamiltonian<br/>SparsePauliOp (Z, ZZ)"]
+    D --> E["QAOA circuit<br/>H, then p x (RZ/RZZ + RX)<br/>(qaoa.py)"]
+    E <-->|"update (beta, gamma)"| F["COBYLA optimiser"]
+    E --> G["Statevector simulator<br/>sample 4000 shots"]
+    G --> H["Decode + feasibility filter<br/>best feasible allocation"]
+    B --> I["Classical baselines<br/>brute force, MILP, greedy"]
+    I --> J["Comparison<br/>objective, gap, feasibility, time"]
+    H --> J
+    J --> K["results/ table, JSON, plot"]
